@@ -2,6 +2,9 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
+import dev.icerock.moko.network.tasks.GenerateTask
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
     id("com.android.library")
     id("dev.icerock.moko.gradle.android.base")
@@ -30,16 +33,16 @@ dependencies {
     commonMainApi(libs.mokoMvvmCore)
     commonMainApi(libs.mokoMvvmLiveData)
 
-    commonMainApi(project(":network"))
-    commonMainApi(project(":network-bignum"))
-    commonMainApi(project(":network-engine"))
-    commonMainApi(project(":network-errors"))
+    commonMainApi(projects.network)
+    commonMainApi(projects.networkBignum)
+    commonMainApi(projects.networkEngine)
+    commonMainApi(projects.networkErrors)
 
     androidMainImplementation(libs.lifecycleViewModel)
     
     commonTestImplementation(libs.ktorClientMock)
     commonTestImplementation(libs.mokoTest)
-    commonTestImplementation(libs.kotlinTestAnnotations)
+    commonTestImplementation(libs.kotlinTest)
 
     androidTestImplementation(libs.kotlinTestJUnit)
 }
@@ -128,3 +131,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
             testResourcesDir.copyRecursively(destinationDirectory.get().asFile, overwrite = true)
         }
     }
+
+val generateTasks = tasks.withType<GenerateTask>()
+tasks.withType<Detekt>().configureEach {
+    dependsOn(generateTasks)
+}

@@ -14,8 +14,6 @@ android {
 }
 
 kotlin {
-    jvmToolchain(17)
-
     jvm()
 }
 
@@ -23,5 +21,5 @@ dependencies {
     commonMainImplementation(libs.kotlinSerialization)
     commonMainApi(libs.kbignum)
 
-    commonMainImplementation(project(":network"))
+    commonMainImplementation(projects.network)
 }

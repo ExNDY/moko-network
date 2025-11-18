@@ -12,6 +12,6 @@ install! 'cocoapods', :disable_input_output_paths => true
 
 target 'TestProj' do
   # MultiPlatformLibrary
-  # для корректной установки фреймворка нужно сначала скомпилировать котлин библиотеку - compile-kotlin-framework.sh (в корневой директории репозитория)
+  # at first run ./gradlew :sample:mpp-library:syncMultiPlatformLibraryDebugFrameworkIosSimulatorArm64
   pod 'MultiPlatformLibrary', :path => '../mpp-library'
 end

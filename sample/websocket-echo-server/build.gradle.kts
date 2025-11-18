@@ -16,8 +16,8 @@ java {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-netty:3.3.2")
-    implementation("io.ktor:ktor-server-core:3.3.2")
-    implementation("io.ktor:ktor-websockets:3.3.2")
-    implementation("ch.qos.logback:logback-classic:1.5.21")
+    implementation(libs.ktorServerNetty)
+    implementation(libs.ktorServerCore)
+    implementation(libs.ktorServerWebSockets)
+    implementation(libs.logback)
 }

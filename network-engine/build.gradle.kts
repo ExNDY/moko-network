@@ -15,8 +15,6 @@ android {
 }
 
 kotlin {
-    jvmToolchain(17)
-
     jvm()
 
     sourceSets {
@@ -41,6 +39,6 @@ kotlin {
 
 dependencies {
     commonMainImplementation(libs.coroutines)
-    commonMainApi(project(":network"))
+    commonMainApi(projects.network)
     iosMainApi(libs.ktorClientIos)
 }

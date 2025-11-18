@@ -16,7 +16,6 @@ android {
 }
 
 kotlin {
-    jvmToolchain(17)
     jvm()
 
     sourceSets {
@@ -28,9 +27,6 @@ kotlin {
 
         val androidMain by getting {
             dependsOn(commonJvmAndroid)
-            dependencies {
-                implementation(libs.appCompat)
-            }
         }
 
         val jvmMain by getting {
@@ -50,8 +46,10 @@ dependencies {
     commonMainApi(libs.kotlinSerialization)
     commonMainApi(libs.ktorClient)
 
+    androidMainImplementation(libs.appCompat)
+
     commonTestImplementation(libs.ktorClientMock)
-    commonTestImplementation(libs.kotlinTestAnnotations)
+    commonTestImplementation(libs.kotlinTest)
 
     androidTestImplementation(libs.kotlinTestJUnit)
 }

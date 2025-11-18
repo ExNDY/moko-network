@@ -8,7 +8,7 @@ import dev.icerock.moko.network.plugins.LanguagePlugin.LanguageCodeProvider
 import java.util.Locale
 
 actual class LanguageProvider : LanguageCodeProvider {
-    override fun getLanguageCode(): String? {
+    actual override fun getLanguageCode(): String? {
         return Locale.getDefault().displayLanguage
     }
 }

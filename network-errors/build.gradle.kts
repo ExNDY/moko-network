@@ -14,17 +14,18 @@ android {
     namespace = "dev.icerock.moko.network.errors"
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 dependencies {
     commonMainImplementation(libs.kotlinSerialization)
 
     commonMainApi(libs.mokoErrors)
     commonMainApi(libs.mokoResources)
 
-    commonMainImplementation(project(":network"))
+    commonMainImplementation(projects.network)
+
+    // temporary workaround for
+    // e: KLIB resolver: Could not find "dev.icerock.moko:parcelize
+    // caused moko-errors
+    iosMainApi("dev.icerock.moko:parcelize:0.9.0")
 }
 
 multiplatformResources {
