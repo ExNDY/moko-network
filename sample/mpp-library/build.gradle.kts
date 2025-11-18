@@ -15,6 +15,10 @@ plugins {
     id("dev.icerock.moko.gradle.tests")
 }
 
+android {
+    namespace = "com.icerockdev.library"
+}
+
 dependencies {
     commonMainImplementation(libs.coroutines)
     commonMainImplementation(libs.ktorClient)
@@ -26,15 +30,14 @@ dependencies {
     commonMainApi(libs.mokoMvvmCore)
     commonMainApi(libs.mokoMvvmLiveData)
 
-    commonMainApi(projects.network)
-    commonMainApi(projects.networkEngine)
-    commonMainApi(projects.networkBignum)
-    commonMainApi(projects.networkErrors)
+    commonMainApi(project(":network"))
+    commonMainApi(project(":network-bignum"))
+    commonMainApi(project(":network-engine"))
+    commonMainApi(project(":network-errors"))
 
     androidMainImplementation(libs.lifecycleViewModel)
     
     commonTestImplementation(libs.ktorClientMock)
-    commonTestImplementation(libs.kotlinTest)
     commonTestImplementation(libs.mokoTest)
     commonTestImplementation(libs.kotlinTestAnnotations)
 
@@ -42,7 +45,7 @@ dependencies {
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "com.icerockdev.library"
+    resourcesPackage = "com.icerockdev.library"
 }
 
 mokoNetwork {
@@ -125,4 +128,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
             testResourcesDir.copyRecursively(destinationDirectory.get().asFile, overwrite = true)
         }
     }
-

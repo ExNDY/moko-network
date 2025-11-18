@@ -14,15 +14,19 @@ android {
     namespace = "dev.icerock.moko.network.errors"
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 dependencies {
     commonMainImplementation(libs.kotlinSerialization)
 
     commonMainApi(libs.mokoErrors)
     commonMainApi(libs.mokoResources)
 
-    commonMainImplementation(projects.network)
+    commonMainImplementation(project(":network"))
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "dev.icerock.moko.network.errors"
+    resourcesPackage = "dev.icerock.moko.network.errors"
 }
