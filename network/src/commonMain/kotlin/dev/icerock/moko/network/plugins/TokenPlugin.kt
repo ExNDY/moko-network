@@ -30,11 +30,12 @@ class TokenPlugin private constructor(
         override fun prepare(block: Config.() -> Unit) = Config().apply(block).build()
 
         override fun install(plugin: TokenPlugin, scope: HttpClient) {
-            scope.requestPipeline.intercept(HttpRequestPipeline.State) {
+            scope.requestPipeline.intercept(HttpRequestPipeline.Before) {
                 plugin.tokenProvider.getToken()?.apply {
                     context.headers.remove(plugin.tokenHeaderName)
                     context.header(plugin.tokenHeaderName, this)
                 }
+                proceed()
             }
         }
     }

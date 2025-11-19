@@ -7,7 +7,6 @@ package dev.icerock.moko.network.plugins
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.request.HttpRequest
-import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.request
 import io.ktor.client.request.takeFrom
 import io.ktor.client.statement.HttpReceivePipeline
@@ -51,11 +50,14 @@ class RefreshTokenPlugin(
                 }
 
                 refreshTokenHttpPluginMutex.withLock {
+                    val originalRequest = subject.request
+
                     // If token of the request isn't actual, then token has already been updated and
                     // let's just to try repeat request
                     if (!plugin.isCredentialsActual(subject.request)) {
-                        val requestBuilder = HttpRequestBuilder().takeFrom(subject.request)
-                        val result: HttpResponse = scope.request(requestBuilder)
+                        val result: HttpResponse = scope.request {
+                            takeFrom(originalRequest)
+                        }
                         proceedWith(result)
                         return@intercept
                     }
@@ -64,8 +66,9 @@ class RefreshTokenPlugin(
                     // refresh request.
                     if (plugin.updateTokenHandler.invoke()) {
                         // If the request refresh was successful, then let's just to try repeat request
-                        val requestBuilder = HttpRequestBuilder().takeFrom(subject.request)
-                        val result: HttpResponse = scope.request(requestBuilder)
+                        val result: HttpResponse = scope.request {
+                            takeFrom(originalRequest)
+                        }
                         proceedWith(result)
                     } else {
                         // If the request refresh was unsuccessful
