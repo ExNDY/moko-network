@@ -50,7 +50,6 @@ dependencies {
 
     commonTestImplementation(libs.ktorClientMock)
     commonTestImplementation(libs.kotlinTest)
-    commonTestImplementation(libs.kotlinTestAnnotations)
 
     androidTestImplementation(libs.kotlinTestJUnit)
 }

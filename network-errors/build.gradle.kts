@@ -21,8 +21,13 @@ dependencies {
     commonMainApi(libs.mokoResources)
 
     commonMainImplementation(projects.network)
+
+    // temporary workaround for
+    // e: KLIB resolver: Could not find "dev.icerock.moko:parcelize
+    // caused moko-errors
+    iosMainApi("dev.icerock.moko:parcelize:0.9.0")
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "dev.icerock.moko.network.errors"
+    resourcesPackage = "dev.icerock.moko.network.errors"
 }

@@ -9,6 +9,8 @@ import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.MockRequestHandler
 import io.ktor.client.engine.mock.respondError
 import io.ktor.client.engine.mock.respondOk
+import io.ktor.client.request.HttpRequest
+import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.get
 import io.ktor.client.statement.request
 import io.ktor.http.HttpStatusCode
@@ -49,6 +51,8 @@ class RefreshTokenPluginTest {
         val invalidToken = "123"
         val validToken = "124"
         val tokenHolder = MutableStateFlow<String?>(invalidToken)
+        var lastSuccessfulRequest: HttpRequestData? = null
+
         val client = createMockClient(
             tokenProvider = { tokenHolder.value },
             pluginConfig = {
@@ -63,7 +67,10 @@ class RefreshTokenPluginTest {
         ) { request ->
             if (request.headers[AUTH_HEADER_NAME] == invalidToken) {
                 respondError(status = HttpStatusCode.Unauthorized)
-            } else respondOk()
+            } else {
+                lastSuccessfulRequest = request
+                respondOk()
+            }
         }
 
         val result = runBlocking {
@@ -71,7 +78,7 @@ class RefreshTokenPluginTest {
         }
 
         assertEquals(expected = HttpStatusCode.OK, actual = result.status)
-        assertEquals(expected = validToken, actual = result.request.headers[AUTH_HEADER_NAME])
+        assertEquals(expected = validToken, actual = lastSuccessfulRequest?.headers?.get(AUTH_HEADER_NAME))
     }
 
     @Test
@@ -80,6 +87,7 @@ class RefreshTokenPluginTest {
         val validToken = "124"
         val tokenHolder = MutableStateFlow<String?>(invalidToken)
         var isFirstTime = true
+        var lastSuccessfulRequest: HttpRequestData? = null
 
         val client = createMockClient(
             tokenProvider = object : TokenPlugin.TokenProvider {
@@ -105,7 +113,10 @@ class RefreshTokenPluginTest {
             handler = { request ->
                 if (request.headers[AUTH_HEADER_NAME] == invalidToken) {
                     respondError(status = HttpStatusCode.Unauthorized)
-                } else respondOk()
+                } else {
+                    lastSuccessfulRequest = request
+                    respondOk()
+                }
             }
         )
 
@@ -122,7 +133,7 @@ class RefreshTokenPluginTest {
         }
 
         assertEquals(expected = HttpStatusCode.OK, actual = result.status)
-        assertEquals(expected = validToken, actual = result.request.headers[AUTH_HEADER_NAME])
+        assertEquals(expected = validToken, actual = lastSuccessfulRequest?.headers?.get(AUTH_HEADER_NAME))
     }
 
     @Test
@@ -131,6 +142,7 @@ class RefreshTokenPluginTest {
         val validToken = "124"
         val tokenHolder = MutableStateFlow<String?>(invalidToken)
         var isFirstTime = true
+        var lastSuccessfulRequest: HttpRequestData? = null
 
         val client = createMockClient(
             tokenProvider = object : TokenPlugin.TokenProvider {
@@ -154,7 +166,10 @@ class RefreshTokenPluginTest {
             handler = { request ->
                 if (request.headers[AUTH_HEADER_NAME] == invalidToken) {
                     respondError(status = HttpStatusCode.Unauthorized)
-                } else respondOk()
+                } else {
+                    lastSuccessfulRequest = request
+                    respondOk()
+                }
             }
         )
 
@@ -171,7 +186,7 @@ class RefreshTokenPluginTest {
         }
 
         assertEquals(expected = HttpStatusCode.OK, actual = result.status)
-        assertEquals(expected = validToken, actual = result.request.headers[AUTH_HEADER_NAME])
+        assertEquals(expected = validToken, actual = lastSuccessfulRequest?.headers?.get(AUTH_HEADER_NAME))
     }
 
     private fun createMockClient(
@@ -183,6 +198,7 @@ class RefreshTokenPluginTest {
             engine {
                 addHandler(handler)
             }
+            install(RefreshTokenPlugin, pluginConfig)
 
             if (tokenProvider != null) {
                 install(TokenPlugin) {
@@ -190,7 +206,6 @@ class RefreshTokenPluginTest {
                     this.tokenProvider = tokenProvider
                 }
             }
-            install(RefreshTokenPlugin, pluginConfig)
         }
     }
 

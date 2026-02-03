@@ -2,6 +2,9 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
+import dev.icerock.moko.network.tasks.GenerateTask
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
     id("com.android.library")
     id("dev.icerock.moko.gradle.android.base")
@@ -15,6 +18,8 @@ plugins {
     id("dev.icerock.moko.gradle.tests")
 }
 
+android.namespace = "com.icerockdev.library"
+
 dependencies {
     commonMainImplementation(libs.coroutines)
     commonMainImplementation(libs.ktorClient)
@@ -27,22 +32,21 @@ dependencies {
     commonMainApi(libs.mokoMvvmLiveData)
 
     commonMainApi(projects.network)
-    commonMainApi(projects.networkEngine)
     commonMainApi(projects.networkBignum)
+    commonMainApi(projects.networkEngine)
     commonMainApi(projects.networkErrors)
 
     androidMainImplementation(libs.lifecycleViewModel)
     
     commonTestImplementation(libs.ktorClientMock)
-    commonTestImplementation(libs.kotlinTest)
     commonTestImplementation(libs.mokoTest)
-    commonTestImplementation(libs.kotlinTestAnnotations)
+    commonTestImplementation(libs.kotlinTest)
 
     androidTestImplementation(libs.kotlinTestJUnit)
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "com.icerockdev.library"
+    resourcesPackage = "com.icerockdev.library"
 }
 
 mokoNetwork {
@@ -126,3 +130,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
         }
     }
 
+val generateTasks = tasks.withType<GenerateTask>()
+tasks.withType<Detekt>().configureEach {
+    dependsOn(generateTasks)
+}
