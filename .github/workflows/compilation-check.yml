@@ -16,10 +16,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: Check plugin
-        run: ./gradlew -p network-generator build publishToMavenLocal
-      - name: Check runtime
-        run: ./gradlew build publishToMavenLocal syncMultiPlatformLibraryDebugFrameworkIosX64
+      - name: Checks
+        run: ./local-check.sh
       - name: Install pods
         run: cd sample/ios-app && pod install
       - name: Check iOS
