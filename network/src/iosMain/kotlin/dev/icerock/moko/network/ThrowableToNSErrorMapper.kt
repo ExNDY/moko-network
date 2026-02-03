@@ -7,7 +7,7 @@
 package dev.icerock.moko.network
 
 import platform.Foundation.NSError
-import kotlin.native.concurrent.AtomicReference
+import kotlin.concurrent.AtomicReference
 
 object ThrowableToNSErrorMapper : (Throwable) -> NSError? {
     private val mapperRef: AtomicReference<((Throwable) -> NSError?)?> = AtomicReference(null)

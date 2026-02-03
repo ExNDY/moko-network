@@ -8,14 +8,11 @@ import io.ktor.http.content.PartData
 import io.ktor.http.content.forEachPart
 import io.ktor.http.content.streamProvider
 import io.ktor.server.application.Application
-import io.ktor.server.application.call
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import java.io.File
-import kotlin.collections.mutableMapOf
-import kotlin.collections.set
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
