@@ -4,9 +4,11 @@
 
 package dev.icerock.moko.network.errors
 
+import dev.icerock.moko.errors.MR as ErrorsMR
 import dev.icerock.moko.resources.StringResource
 
 data class NetworkErrorsTexts(
+    val defaultErrorText: StringResource = ErrorsMR.strings.moko_errors_unknownError,
     val networkConnectionErrorText: StringResource = MR.strings.networkConnectionErrorText,
     val serializationErrorText: StringResource = MR.strings.serializationErrorText,
     val httpNetworkErrorsTexts: HttpNetworkErrorsTexts = HttpNetworkErrorsTexts(),
