@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.network.errors
 
-import dev.icerock.moko.errors.MR
 import dev.icerock.moko.errors.mappers.ExceptionMappersStorage
 import dev.icerock.moko.network.SSLExceptionType
 import dev.icerock.moko.network.exceptions.ErrorException
