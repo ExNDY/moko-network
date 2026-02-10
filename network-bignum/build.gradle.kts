@@ -15,6 +15,10 @@ android {
 
 kotlin {
     jvm()
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 }
 
 dependencies {

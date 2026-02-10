@@ -14,6 +14,12 @@ android {
     namespace = "dev.icerock.moko.network.errors"
 }
 
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+}
+
 dependencies {
     commonMainImplementation(libs.kotlinSerialization)
 

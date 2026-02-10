@@ -10,10 +10,10 @@ plugins {
     id("dev.icerock.moko.gradle.android.base")
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("dev.icerock.mobile.multiplatform.targets")
+    id("dev.icerock.moko.gradle.multiplatform.mobile")
+    id("dev.icerock.mobile.multiplatform.ios-framework")
     id("dev.icerock.mobile.multiplatform-resources")
     id("dev.icerock.mobile.multiplatform-network-generator")
-    id("dev.icerock.mobile.multiplatform.ios-framework")
     id("dev.icerock.moko.gradle.detekt")
     id("dev.icerock.moko.gradle.tests")
 }
