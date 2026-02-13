@@ -36,7 +36,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "dev.icerock.moko:network-generator:0.22.0"
+        classpath "dev.icerock.moko:network-generator:0.23.0"
     }
 }
 
@@ -53,10 +53,10 @@ project build.gradle
 apply plugin: "dev.icerock.mobile.multiplatform-network-generator"
 
 dependencies {
-    commonMainApi("dev.icerock.moko:network:0.22.0")
-    commonMainApi("dev.icerock.moko:network-engine:0.22.0") // configured HttpClientEngine
-    commonMainApi("dev.icerock.moko:network-bignum:0.22.0") // kbignum serializer
-    commonMainApi("dev.icerock.moko:network-errors:0.22.0") // moko-errors integration
+    commonMainApi("dev.icerock.moko:network:0.23.0")
+    commonMainApi("dev.icerock.moko:network-engine:0.23.0") // configured HttpClientEngine
+    commonMainApi("dev.icerock.moko:network-bignum:0.23.0") // kbignum serializer
+    commonMainApi("dev.icerock.moko:network-errors:0.23.0") // moko-errors integration
 }
 ```
 
@@ -172,6 +172,52 @@ viewModelScope.launch {
 
         // ...
     }.execute()
+}
+```
+
+#### Customizing error texts
+
+You can override standard error messages (which are localized in English and Russian by default) by
+passing your own NetworkErrorsTexts object. This allows you to customize messages for HTTP errors,
+SSL issues, serialization failures, and set a fallback defaultErrorText.
+
+Usage example:
+
+```kotlin
+// 1. Define HTTP specific errors
+private val httpNetworkErrorsTexts = HttpNetworkErrorsTexts(
+    unauthorizedErrorText = MR.strings.unauthorizedErrorText,
+    notFoundErrorText = MR.strings.notFoundErrorText,
+    accessDeniedErrorText = MR.strings.accessDeniedErrorText,
+    internalServerErrorText = MR.strings.internalServerErrorText
+)
+
+// 2. Define SSL specific errors
+private val sslNetworkErrorsTexts = SSLNetworkErrorsTexts(
+    secureConnectionFailed = MR.strings.secureConnectionFailedText,
+    serverCertificateHasBadDate = MR.strings.serverCertificateHasBadDateText,
+    serverCertificateUntrusted = MR.strings.serverCertificateUntrustedText,
+    serverCertificateHasUnknownRoot = MR.strings.serverCertificateHasUnknownRootText,
+    serverCertificateNotYetValid = MR.strings.serverCertificateNotYetValidText,
+    clientCertificateRejected = MR.strings.clientCertificateRejectedText,
+    clientCertificateRequired = MR.strings.clientCertificateRequiredText,
+    cannotLoadFromNetwork = MR.strings.cannotLoadFromNetworkText
+)
+
+// 3. Assemble all texts including general network errors and default fallback
+private val networkErrorsTexts = NetworkErrorsTexts(
+    networkConnectionErrorText = MR.strings.networkConnectionErrorText,
+    serializationErrorText = MR.strings.serializationErrorText,
+    httpNetworkErrorsTexts = httpNetworkErrorsTexts,
+    sslNetworkErrorsTexts = sslNetworkErrorsTexts,
+    defaultErrorText = MR.strings.defaultErrorText // Fallback for undefined errors
+)
+
+// 4. Register mappers with your custom texts
+fun initExceptionMappersStorage() {
+    ExceptionMappersStorage.registerAllNetworkMappers(
+        errorsTexts = networkErrorsTexts
+    )
 }
 ```
 
