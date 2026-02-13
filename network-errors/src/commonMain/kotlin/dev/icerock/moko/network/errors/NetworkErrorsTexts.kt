@@ -8,11 +8,11 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.errors.MR as ErrorsMR
 
 data class NetworkErrorsTexts(
-    val defaultErrorText: StringResource = ErrorsMR.strings.moko_errors_unknownError,
     val networkConnectionErrorText: StringResource = MR.strings.networkConnectionErrorText,
     val serializationErrorText: StringResource = MR.strings.serializationErrorText,
     val httpNetworkErrorsTexts: HttpNetworkErrorsTexts = HttpNetworkErrorsTexts(),
-    val sslNetworkErrorsTexts: SSLNetworkErrorsTexts = SSLNetworkErrorsTexts()
+    val sslNetworkErrorsTexts: SSLNetworkErrorsTexts = SSLNetworkErrorsTexts(),
+    val defaultErrorText: StringResource = ErrorsMR.strings.moko_errors_unknownError,
 )
 
 data class HttpNetworkErrorsTexts(
